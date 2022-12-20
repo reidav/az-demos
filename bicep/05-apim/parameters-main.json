@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apimServicePrefixName": {
+      "value": "apim"
+    },
+    "publisherEmail": {
+      "value": "contoso@contoso.com"
+    },
+    "publisherName": {
+      "value": "contoso"
+    },
+    "sku": {
+      "value": "Developer"
+    },
+    "skuCount": {
+      "value": 1
+    },
+    "apimVnetPrefixName": {
+      "value": "vnet"
+    },
+    "apimSubnetName": {
+      "value": "apim-snet"
+    },
+    "apimNetworkType": {
+      "value": "Internal"
+    },
+    "keyVaultPrefixName": {
+      "value": "kv"
+    },
+    "keyVaultUaiPrefixName": {
+      "value": "id-kv"
+    },
+    "gatewayCustomHostnamePrefix": {
+      "value": "apim"
+    },
+    "gatewayCustomHostnameDomain": {
+      "value": "davidrei.xyz"
+    }
+  }
+}
