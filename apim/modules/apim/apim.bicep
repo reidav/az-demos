@@ -1,5 +1,6 @@
-@description('Name of the API Management Service to provision')
-param apimServicePrefixName string
+@description('API management instance name')
+@minLength(1)
+param name string
 
 @description('The email address of the owner of the service')
 @minLength(1)
@@ -19,45 +20,29 @@ param publisherName string = 'Contoso'
 ])
 param sku string = 'Developer'
 
-param apimVnetPrefixName string
-param apimSubnetName string
-param apimNetworkType string
-
-param gatewayCustomHostnamePrefix string
-
-param gatewayCustomHostnameDomain string
+param networkType string = 'Internal'
 
 @description('The instance size of this API Management service.')
 param skuCount int = 1
 
-param keyVaultPrefixName string
-param keyVaultUaiPrefixName string
-
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
-var apimServiceName = '${apimServicePrefixName}-${uniqueString(resourceGroup().id)}'
-var apimVnetName = '${apimVnetPrefixName}-${uniqueString(resourceGroup().id)}'
+@description('Subnet resource id')
+@minLength(1)
+param subnetResourceId string
 
-var keyVaultName = '${keyVaultPrefixName}-${uniqueString(resourceGroup().id)}'
-var keyVaultUaiName = '${keyVaultUaiPrefixName}-${uniqueString(resourceGroup().id)}'
-var gatewayCustomHostname = '${gatewayCustomHostnamePrefix}-${uniqueString(resourceGroup().id)}.${gatewayCustomHostnameDomain}'
-
-resource keyVaultUai 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
-  name: keyVaultUaiName
-}
-
-// resource sslCertSecret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' existing = {
-//   name: '${keyVaultName}/sslCert'
-// }
+@description('Keyvault user assigned identity')
+@minLength(1)
+param keyVaultUserAssignedIdentity string
 
 resource apim 'Microsoft.ApiManagement/service@2021-04-01-preview' = {
-  name: apimServiceName
+  name: name
   location: location
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${keyVaultUai.id}': {}
+      '${keyVaultUserAssignedIdentity}': {}
     }
   }
   sku: {
@@ -78,9 +63,9 @@ resource apim 'Microsoft.ApiManagement/service@2021-04-01-preview' = {
     publisherEmail: publisherEmail
     publisherName: publisherName
     virtualNetworkConfiguration:{
-      subnetResourceId: resourceId('Microsoft.Network/VirtualNetworks/subnets', apimVnetName, apimSubnetName)
+      subnetResourceId: subnetResourceId
     }
-    virtualNetworkType: apimNetworkType
+    virtualNetworkType: networkType
     customProperties: {
       'Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2': 'true'
     }

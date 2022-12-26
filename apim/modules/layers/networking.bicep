@@ -1,21 +1,20 @@
-param vnetName string
-param vnetPrefix string
-param vnetSubnets array
-param vnetTags object
+param name string
+param addressPrefix string
+param subnets array
 
 param location string = resourceGroup().location
 
 resource vnet 'Microsoft.Network/virtualNetworks@2020-06-01' = {
-  name: vnetName
+  name: name
   location: location
   properties: {
     addressSpace: {
       addressPrefixes: [
-        vnetPrefix
+        addressPrefix
       ]
     }
     enableDdosProtection: false
-    subnets: [for subnet in vnetSubnets: {
+    subnets: [for subnet in subnets: {
       name: subnet.Name
       properties: {
         addressPrefix: subnet.AddressSpace
@@ -23,3 +22,5 @@ resource vnet 'Microsoft.Network/virtualNetworks@2020-06-01' = {
     }]
   }
 }
+
+output vnetId string = vnet.id
