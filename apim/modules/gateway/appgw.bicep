@@ -31,7 +31,7 @@ param keyVaultResourceGroupName string
 param location                      string = resourceGroup().location
 
 
-module appGwCertificates '../keyvault/certificates-secret.bicep' = {
+module appGwCertificates '../shared/keyvault/certificates-secret.bicep' = {
   name: 'certificates'
   scope: resourceGroup(keyVaultResourceGroupName)
   params: {
