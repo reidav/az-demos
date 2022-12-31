@@ -54,7 +54,7 @@ resource apim 'Microsoft.ApiManagement/service@2021-04-01-preview' = {
       // {
       //   type: 'Proxy'
       //   hostName: gatewayCustomHostname
-      //   keyVaultId: 'https://kv-v74i2yr6x5viy.vault.azure.net/secrets/sslCert/5c60e2b5e2424c4580da036a32966503'
+      //   keyVaultId: 'xxxx'
       //   identityClientId: keyVaultUai.properties.clientId
       //   defaultSslBinding: true
       //   certificatePassword: 'azerty'
